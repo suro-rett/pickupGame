@@ -19,11 +19,7 @@ void Scene::Update()
 	GameObjectManager::GetInstance().ClearDeadObjects();
 	
 
-	//回収のテスト用
-	if (CheckHitKey(KEY_INPUT_S))
-	{
-		ItemObjMgr::GetInstance()->GetAllPickUpItem();
-	}
+	
 }
 
 void Scene::Draw()

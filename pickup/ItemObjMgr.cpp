@@ -10,7 +10,7 @@ ItemObjMgr::ItemObjMgr()
 
 ItemObjMgr::~ItemObjMgr()
 {
-    // アイテムオブジェクトのクリーンアップ
+
     for (auto& item : itemObjs)
     {
         delete item;
@@ -20,10 +20,10 @@ ItemObjMgr::~ItemObjMgr()
 
 void ItemObjMgr::Init()
 {
-    // アイテムオブジェクトの初期化
-    // ここでは例として、いくつかのアイテムオブジェクトを作成して追加しています。
-    for (int i = 0; i < 10; i++) {
-        itemObjs.push_back(new ItemObj());
+	ganarataCount = 20; //生成するアイテムの数
+    generateOffArea = rect(0.05f, 0.3f, 0.05f, 0.1f);
+    for (int i = 0; i < ganarataCount; i++) {
+        itemObjs.push_back(new ItemObj(generateOffArea));
     }
 }
 

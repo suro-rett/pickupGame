@@ -12,8 +12,11 @@ private:
 	~ItemObjMgr();
 	static ItemObjMgr* instance;
 	std::vector<ItemObj*> itemObjs;
+	int ganarataCount;//生成するアイテムの数
+	rect generateOffArea;//生成するエリアの範囲
 
 	void Init();
+	
 
 public:
 	//シングルトン化

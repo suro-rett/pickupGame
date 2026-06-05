@@ -1,9 +1,10 @@
 ﻿#include "stdafx.h"
 #include "ItemObj.h"
 #include "Collider.h"
-ItemObj::ItemObj()
+ItemObj::ItemObj(rect genarateOffArea)
 {
 	Initialize();
+	RandomPos(genarateOffArea);
 }
 
 
@@ -12,33 +13,30 @@ void ItemObj::Initialize()
 	auto collider = std::make_unique<CircleCollider>(Vec2f(0.0f, 0.0f), radius);
 	collider->SetTag(ColliderTag::TAG_ITEM);
 	AddCollider(std::move(collider));
-	pos = RandomPos();
 }
 
-Vec2f ItemObj::RandomPos()
+void ItemObj::RandomPos(rect genarateOffArea)
 {
-	return { static_cast<float>(rand() % Config::ScreenWidth), static_cast<float>(rand() % Config::ScreenHeight) };
+	genarateOffArea.GetRect();
+	int l, r, t, b;
+	l=Config::ScreenWidth* genarateOffArea.GetRect().GetLeft();
+	r = Config::ScreenWidth * (1-genarateOffArea.GetRect().GetRight());
+	t = Config::ScreenHeight * genarateOffArea.GetRect().GetTop();
+	b =  Config::ScreenHeight *(1 - genarateOffArea.GetRect().GetBottom());
+
+	pos = { static_cast<float>(rand() % (r - l) + l), static_cast<float>(rand() % (b - t) + t) };
 }
 
 void ItemObj::OnCollision(BaseCollider* collider)
 {
 	if (collider->GetTag() == ColliderTag::TAG_PLAYER)
 	{
-		//Kill(); // プレイヤーと衝突した際に自身を消す
 		isPickUp = true; // プレイヤーと衝突した際にアイテムを拾ったことにする
 	}
 }
 
 void ItemObj::Draw(const Camera& camera)
 {
-	if (CheckHitKey(KEY_INPUT_A))
-	{
-		isPickUp = true;
-		
-	}
-	else {
-		isPickUp = false;
-	}
 
 	if (IsPickUp()) {
 		//ここでプレイヤーのポインタを参照して、プレイヤーの位置に描画するようにする
