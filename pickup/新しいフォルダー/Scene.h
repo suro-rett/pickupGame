@@ -3,15 +3,14 @@
 #include "Camera.h"
 #include "Enemy.h"
 #include "UIManager.h"
-#include "Player.h"
+
 class Scene
 {
 private:
 	DrawManager drawManager;
 	Camera camera;
 	Enemy* enemy = nullptr;
-	UIManager* ui = nullptr;
-	Player player;
+	UIManager ui;
 public:
 	virtual ~Scene() {}
 	void Finalize();

@@ -1,27 +1,27 @@
 ﻿#include "stdafx.h"
-#include "Enemy.h"
+#include "Item.h"
 #include "Collider.h"
 
-void Enemy::OnCollision(BaseCollider* collider)
+void Item::OnCollision(BaseCollider* collider)
 {
 
 }
 
-void Enemy::Initialize()
+void Item::Initialize()
 {
 
 }
 
-void Enemy::Finalize()
+void Item::Finalize()
 {
 
 }
 
-void Enemy::Update()
+void Item::Update()
 {
 }
 
-void Enemy::Draw(const Camera& camera)
+void Item::Draw(const Camera& camera)
 {
 
 }

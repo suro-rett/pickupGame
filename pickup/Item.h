@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "GameObject.h"
-class Enemy :
+class Item :
     public GameObject
 {
 public:

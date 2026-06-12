@@ -5,7 +5,8 @@ enum class ColliderTag
     TAG_NULL,
     TAG_PLAYER,
     TAG_ENEMY,
-	TAG_ITEM,
+    TAG_STAGE,
+    TAG_ITEM,
 };
 
 enum class ColliderType
