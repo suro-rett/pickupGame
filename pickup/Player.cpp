@@ -1,24 +1,30 @@
 ﻿#include "stdafx.h"
 #include "Player.h"
 #include "Collider.h"
-#include "PlayerManager.h"
+#include "ItemObjMgr.h"
 
 void Player::OnCollision(BaseCollider* collider)
 {
-	if (collider->GetTag() == ColliderTag::TAG_ENEMY)
+	if (collider->GetTag() == ColliderTag::TAG_ENEMY || collider->GetTag() == ColliderTag::TAG_STAGE)
 	{
-		Kill(); // プレイヤーが敵と衝突した場合、プレイヤーを死なせる
-		PlayerManager::GetInstance().SetPlayer(nullptr); // プレイヤーが死んだので、PlayerManagerのプレイヤーポインタをnullptrにする
+		if (shot) {
+			shot = false;
+			back = true;
+		}
+		if (!shot && !back) {
+			timeVec *= -1;
+		}
+
 	}
 }
 
 void Player::Initialize()
 {
-	auto collider = std::make_unique<CircleCollider>(Vec2f(0.0f, 0.0f), 16.0f);
+	auto collider = std::make_unique<CircleCollider>(Vec2f(0.0f, 0.0f), 8.0f);
 	collider->SetTag(ColliderTag::TAG_PLAYER);
 	AddCollider(std::move(collider));
 
-	pos = { Config::ScreenWidth / 2,Config::ScreenHeight / 2 };
+	Stinger = { Config::ScreenWidth / 2,Config::ScreenHeight / 4 - 35 };
 }
 
 void Player::Finalize()
@@ -29,31 +35,68 @@ void Player::Finalize()
 void Player::Update()
 {
 	Vec2f inputDir = { 0.0f, 0.0f };
-	const int space = 50; // プレイヤーの移動速度
-	if (IsPushKey(KEY_INPUT_UP) && pos.y <= Config::ScreenHeight + space)
-	{
-		inputDir.y += speed;
-	}
-	if (IsPushKey(KEY_INPUT_DOWN) && pos.y >= 0 - space)
-	{
-		inputDir.y -= speed;
-	}
-	if (IsPushKey(KEY_INPUT_LEFT) && pos.x <= Config::ScreenWidth + space)
-	{
-		inputDir.x += speed;
-	}
-	if (IsPushKey(KEY_INPUT_RIGHT) && pos.x >= 0 - space)
+	if (IsPushKey(KEY_INPUT_LEFT) && Stinger.x >= 50 + circleR)
 	{
 		inputDir.x -= speed;
 	}
-	pos += inputDir;
-	Vec2f cameraPos = camera->GetPos() - inputDir; // カメラの位置をプレイヤーの位置に合わせる	
-	camera->SetCameraPos(cameraPos); // カメラの位置をプレイヤーの位置に合わせる
+	if (IsPushKey(KEY_INPUT_RIGHT) && Stinger.x <= Config::ScreenWidth - 50 -circleR)
+	{
+		inputDir.x += speed;
+	}
+	Stinger += inputDir;
+
+	if (IsPushKey(KEY_INPUT_SPACE) && !shot&&!back &&Remaining > 0)
+	{
+		shot = true;
+		back = false;
+		Remaining--;
+	}
+
+	if (IsPushKey(KEY_INPUT_C) && shot && !back)
+	{
+		shot = false;
+		back = true;
+	}
+
+	if (!shot &&back&&length<50)
+	{
+		
+		shot = false;
+		back = false;
+	}
+
+	if (shot) {
+		length += 5;
+	}
+
+	if (back) {
+		length -= 5;
+	}
+
+	if (!shot && !back) {
+		time += 0.05f * timeVec;
+		angle = sin(time) * DX_PI_F / 4.0f;
+	}
+
+
+	//Vec2f cameraPos = camera->GetPos() - inputDir; // カメラの位置をプレイヤーの位置に合わせる	
+	//camera->SetCameraPos(cameraPos); // カメラの位置をプレイヤーの位置に合わせる
 
 }
 
 void Player::Draw(const Camera& camera)
 {
-	Vec2f screenPosition = camera.ToScreen(pos);
-	DrawCircleAA(pos.x, pos.y, 16, 32, GetColor(0, 255, 0));
+	//Vec2f screenPosition = camera.ToScreen(pos);
+	DrawCircleAA(Stinger.x, Stinger.y, circleR, 32, GetColor(0, 255, 0));
+
+
+	// ±45度
+	pos = { Stinger.x + static_cast<float>(length * sin(angle)) ,Stinger.y + static_cast<int>(length * cos(angle)) };
+	
+
+	DrawLineAA( Stinger.x, Stinger.y, pos.x, pos.y, GetColor(255, 255, 255));
+	DrawCircleAA(pos.x, pos.y, 8,32, GetColor(255,255, 0), TRUE);
+
+	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 100, GetColor(255, 255, 255), "残り発射回数:%d", Remaining);
+	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 75, GetColor(255, 255, 255), "手に入れたお宝:%d個", ItemObjMgr::GetInstance()->GetItemCount());
 }
