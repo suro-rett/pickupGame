@@ -20,6 +20,8 @@ private:
 	bool shot = false;		//発射してる状態か
 	bool back = false;		//帰ってきてる途中か
 public:
+
+	Vec2f Stinger{ 0,0 };
 	void OnCollision(BaseCollider* collider) override;
 
 	void GetCamera(Camera* cam) { camera = cam; } // カメラをセットするための関数
