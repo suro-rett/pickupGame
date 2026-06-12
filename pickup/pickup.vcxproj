@@ -145,6 +145,8 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjektManager.cpp" />
+    <ClCompile Include="ItemObj.cpp" />
+    <ClCompile Include="ItemObjMgr.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="myInput.cpp" />
     <ClCompile Include="OneShiftLerp.cpp" />
@@ -172,6 +174,8 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="ItemObj.h" />
+    <ClInclude Include="ItemObjMgr.h" />
     <ClInclude Include="myInput.h" />
     <ClInclude Include="OneShiftLerp.h" />
     <ClInclude Include="Scene.h" />
