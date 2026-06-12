@@ -1,5 +1,5 @@
 ﻿#pragma once
-#define DEBUG false
+#define DEBUG true
 
 namespace Config
 {

@@ -6,17 +6,20 @@ void Player::OnCollision(BaseCollider* collider)
 {
 	if (collider->GetTag() == ColliderTag::TAG_ENEMY)
 	{
-		
+		if (shot) {
+			shot = false;
+			back = false;
+		}
 	}
 }
 
 void Player::Initialize()
 {
-	auto collider = std::make_unique<CircleCollider>(Vec2f(0.0f, 0.0f), 16.0f);
+	auto collider = std::make_unique<CircleCollider>(Vec2f(0.0f, 0.0f), 8.0f);
 	collider->SetTag(ColliderTag::TAG_PLAYER);
 	AddCollider(std::move(collider));
 
-	pos = { Config::ScreenWidth / 2,Config::ScreenHeight / 4 };
+	Stinger = { Config::ScreenWidth / 2,Config::ScreenHeight / 4 };
 }
 
 void Player::Finalize()
@@ -27,18 +30,49 @@ void Player::Finalize()
 void Player::Update()
 {
 	Vec2f inputDir = { 0.0f, 0.0f };
-	if (IsPushKey(KEY_INPUT_LEFT) && pos.x >= 0 + circleR)
+	if (IsPushKey(KEY_INPUT_LEFT) && Stinger.x >= 0 + circleR)
 	{
 		inputDir.x -= speed;
 	}
-	if (IsPushKey(KEY_INPUT_RIGHT) && pos.x <= Config::ScreenWidth - circleR)
+	if (IsPushKey(KEY_INPUT_RIGHT) && Stinger.x <= Config::ScreenWidth - circleR)
 	{
 		inputDir.x += speed;
 	}
-	pos += inputDir;
+	Stinger += inputDir;
 
+	if (IsPushKey(KEY_INPUT_SPACE) && !shot&&!back)
+	{
+		shot = true;
+		back = false;
+	}
+
+	if (IsPushKey(KEY_INPUT_C) && shot && !back)
+	{
+		shot = false;
+		back = true;
+	}
+
+	if (!shot &&back&&length<50)
+	{
+		
+		shot = false;
+		back = false;
+	}
+
+	if (shot) {
+		length += 5;
+	}
+
+	if (back) {
+		length -= 5;
+	}
+
+	if (!shot && !back) {
 	time += 0.05f;
-	angle = sin(time) * DX_PI_F / 4.0f;
+		angle = sin(time) * DX_PI_F / 4.0f;
+	}
+
+
 	//Vec2f cameraPos = camera->GetPos() - inputDir; // カメラの位置をプレイヤーの位置に合わせる	
 	//camera->SetCameraPos(cameraPos); // カメラの位置をプレイヤーの位置に合わせる
 
@@ -47,14 +81,13 @@ void Player::Update()
 void Player::Draw(const Camera& camera)
 {
 	//Vec2f screenPosition = camera.ToScreen(pos);
-	DrawCircleAA(pos.x, pos.y, circleR, 32, GetColor(0, 255, 0));
+	DrawCircleAA(Stinger.x, Stinger.y, circleR, 32, GetColor(0, 255, 0));
 
 
 	// ±45度
+	pos = { Stinger.x + static_cast<float>(length * sin(angle)) ,Stinger.y + static_cast<int>(length * cos(angle)) };
+	
 
-	int endX = pos.x + static_cast<int>(length * sin(angle));
-	int endY = pos.y + static_cast<int>(length * cos(angle));
-
-	DrawLine(pos.x, pos.y, endX, endY, GetColor(255, 255, 255));
-	DrawCircle(endX, endY, 15, GetColor(255, 0, 0), TRUE);
+	DrawLineAA( Stinger.x, Stinger.y, pos.x, pos.y, GetColor(255, 255, 255));
+	DrawCircleAA(pos.x, pos.y, 8,32, GetColor(255,255, 0), TRUE);
 }
