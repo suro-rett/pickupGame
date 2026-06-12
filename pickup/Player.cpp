@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Player.h"
 #include "Collider.h"
+#include "ItemObjMgr.h"
 
 void Player::OnCollision(BaseCollider* collider)
 {
@@ -14,11 +15,6 @@ void Player::OnCollision(BaseCollider* collider)
 			timeVec *= -1;
 		}
 
-	}
-	
-	if (collider->GetTag() == ColliderTag::TAG_ITEM)
-	{
-		getItem++;
 	}
 }
 
@@ -102,5 +98,5 @@ void Player::Draw(const Camera& camera)
 	DrawCircleAA(pos.x, pos.y, 8,32, GetColor(255,255, 0), TRUE);
 
 	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 100, GetColor(255, 255, 255), "残り発射回数:%d", Remaining);
-	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 75, GetColor(255, 255, 255), "手に入れたお宝:%d個", getItem);
+	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 75, GetColor(255, 255, 255), "手に入れたお宝:%d個", ItemObjMgr::GetInstance()->GetItemCount());
 }

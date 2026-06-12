@@ -18,7 +18,6 @@ private:
 	float Linespeed = 0.02f;
 
 	int Remaining = 10;
-	int getItem = 0;
 
 	int timeVec = 1;
 

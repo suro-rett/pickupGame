@@ -20,6 +20,7 @@ ItemObjMgr::~ItemObjMgr()
 
 void ItemObjMgr::Init()
 {
+	currentGetItemCount = 0; //初期化
 	ganarataCount = 20; //生成するアイテムの数
     generateOffArea = rect(0.05f, 0.35f, 0.05f, 0.1f);
     for (int i = 0; i < ganarataCount; i++) {
@@ -41,7 +42,11 @@ void ItemObjMgr::Update()
 			}
 
             if (item->IsHeightCheck()) {
-				GetAllPickUpItem(); // アイテムが画面外に出た場合は回収する
+                if (item && item->IsPickUp())
+                {
+                    currentGetItemCount++;
+                    item->Kill(); // アイテムを回収した後は削除する
+                }
             }
         }
     }
@@ -58,17 +63,6 @@ void ItemObjMgr::RegisterDraw(DrawManager& drawManager)
     }
 }
 
-void ItemObjMgr::GetAllPickUpItem()
-{
-    for (auto& item : itemObjs)
-    {
-        if (item && item->IsPickUp())
-        {
-            currentGetItemCount++;
-            item->Kill(); // アイテムを回収した後は削除する
-        }
-    }
-}
 
 void ItemObjMgr::RisetPickUpItem()
 {
