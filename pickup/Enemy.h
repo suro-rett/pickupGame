@@ -8,7 +8,7 @@ class Enemy:public GameObject
 {
 private:
 	int width, height;	//敵のxy座標、幅、高さ
-	int px;								//敵の移動量
+	int px;				//敵の移動量
 	Vector2D<float> size;
 	BoxCollider* collider = nullptr;
 public:

@@ -10,7 +10,7 @@ private:
 	DrawManager drawManager;
 	Camera camera;
 	Enemy* enemy = nullptr;
-	UIManager ui;
+	UIManager* ui = nullptr;
 public:
 	virtual ~Scene() {}
 	void Finalize();

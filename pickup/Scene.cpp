@@ -3,13 +3,16 @@
 #include "GameObjectManager.h"
 #include "ColliderManager.h"
 #include "Enemy.h"
+#include "UIManager.h"
 
 void Scene::Initialize()
 {
 	GameObjectManager::GetInstance().SetDrawManager(&drawManager);
 	//Enemy::GetInstance().Enemy()
 	enemy = new Enemy{ {100,200},50,50,5 };
-	
+	enemy->Initialize();
+	ui = new UIManager{ {0, 0} };
+	ui->Initialize();
 }
 
 void Scene::Update()
@@ -25,7 +28,7 @@ void Scene::Draw()
 	drawManager.Clear();
 	drawManager.Add(enemy);
 	drawManager.DrawAll(camera);
-	ui.Draw();
+	ui->Draw();
 #if DEBUG
 	ColliderManager::GetInstance().DebugDraw();
 #endif
