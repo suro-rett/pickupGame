@@ -1,18 +1,17 @@
 ﻿#pragma once
 #include "DrawManager.h"
 #include "Camera.h"
-#include "Player.h"
 #include "Enemy.h"
 #include "UIManager.h"
-
+#include "Player.h"
 class Scene
 {
 private:
 	DrawManager drawManager;
 	Camera camera;
-	Player player;
 	Enemy* enemy = nullptr;
-	UIManager ui;
+	UIManager* ui = nullptr;
+	Player player;
 public:
 	virtual ~Scene() {}
 	void Finalize();
