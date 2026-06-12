@@ -17,6 +17,11 @@ private:
 	float angle = 0.0f;
 	float Linespeed = 0.02f;
 
+	int Remaining = 10;
+	int getItem = 0;
+
+	int timeVec = 1;
+
 	bool shot = false;		//発射してる状態か
 	bool back = false;		//帰ってきてる途中か
 public:

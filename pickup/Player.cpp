@@ -10,10 +10,15 @@ void Player::OnCollision(BaseCollider* collider)
 			shot = false;
 			back = true;
 		}
-		if (!shot) {
-			time -= 0.05f;
+		if (!shot && !back) {
+			timeVec *= -1;
 		}
 
+	}
+	
+	if (collider->GetTag() == ColliderTag::TAG_ITEM)
+	{
+		getItem++;
 	}
 }
 
@@ -44,10 +49,11 @@ void Player::Update()
 	}
 	Stinger += inputDir;
 
-	if (IsPushKey(KEY_INPUT_SPACE) && !shot&&!back)
+	if (IsPushKey(KEY_INPUT_SPACE) && !shot&&!back &&Remaining > 0)
 	{
 		shot = true;
 		back = false;
+		Remaining--;
 	}
 
 	if (IsPushKey(KEY_INPUT_C) && shot && !back)
@@ -72,7 +78,7 @@ void Player::Update()
 	}
 
 	if (!shot && !back) {
-		time += 0.05f;
+		time += 0.05f * timeVec;
 		angle = sin(time) * DX_PI_F / 4.0f;
 	}
 
@@ -94,4 +100,7 @@ void Player::Draw(const Camera& camera)
 
 	DrawLineAA( Stinger.x, Stinger.y, pos.x, pos.y, GetColor(255, 255, 255));
 	DrawCircleAA(pos.x, pos.y, 8,32, GetColor(255,255, 0), TRUE);
+
+	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 100, GetColor(255, 255, 255), "残り発射回数:%d", Remaining);
+	DrawFormatString(Config::ScreenWidth - Config::ScreenWidth / 4, Config::ScreenHeight / 4 - 75, GetColor(255, 255, 255), "手に入れたお宝:%d個", getItem);
 }
