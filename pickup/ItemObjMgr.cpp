@@ -21,9 +21,29 @@ ItemObjMgr::~ItemObjMgr()
 void ItemObjMgr::Init()
 {
 	ganarataCount = 20; //生成するアイテムの数
-    generateOffArea = rect(0.05f, 0.3f, 0.05f, 0.1f);
+    generateOffArea = rect(0.05f, 0.35f, 0.05f, 0.1f);
     for (int i = 0; i < ganarataCount; i++) {
         itemObjs.push_back(new ItemObj(generateOffArea));
+    }
+}
+
+void ItemObjMgr::Update()
+{
+    
+    //高さが取得条件を満たしているかを見た後に、フラグが立っていればアイテム回収をする
+    for (auto& item : itemObjs)
+    {
+        if (item && !item->IsDead())
+        {
+            if(item->IsPickUp())
+            {
+				item->SetPosition(*pPlayerPos); // アイテムの位置をプレイヤーの位置に合わせる
+			}
+
+            if (item->IsHeightCheck()) {
+				GetAllPickUpItem(); // アイテムが画面外に出た場合は回収する
+            }
+        }
     }
 }
 
@@ -38,18 +58,16 @@ void ItemObjMgr::RegisterDraw(DrawManager& drawManager)
     }
 }
 
-int ItemObjMgr::GetAllPickUpItem()
+void ItemObjMgr::GetAllPickUpItem()
 {
-    int count = 0;
     for (auto& item : itemObjs)
     {
         if (item && item->IsPickUp())
         {
-            count++;
+            currentGetItemCount++;
             item->Kill(); // アイテムを回収した後は削除する
         }
     }
-    return count;
 }
 
 void ItemObjMgr::RisetPickUpItem()

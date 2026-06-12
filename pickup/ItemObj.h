@@ -31,6 +31,7 @@ class ItemObj : public GameObject
 private:
 	bool isPickUp = false;
 	float radius = 15.0f;
+	float getHeight = 0.3f;//取得とするまでの画面比率の割合
 
 
 	void RandomPos(rect genarateOffArea);
@@ -45,4 +46,6 @@ public:
 
 	bool IsPickUp() const { return isPickUp; }
 	bool RisetIsPickUp() { return isPickUp = false; }
+
+	bool IsHeightCheck();
 };

@@ -28,6 +28,16 @@ void ItemObj::RandomPos(rect genarateOffArea)
 	pos = { static_cast<float>(rand() % (r - l) + l), static_cast<float>(rand() % (b - t) + t) };
 }
 
+bool ItemObj::IsHeightCheck()
+{
+	//アイテムが取得エリアにいるかの判定
+	if (pos.y< Config::ScreenHeight*getHeight)
+	{
+		return true;
+	}
+	return false;
+}
+
 void ItemObj::OnCollision(BaseCollider* collider)
 {
 	if (collider->GetTag() == ColliderTag::TAG_PLAYER)
@@ -40,6 +50,7 @@ void ItemObj::OnCollision(BaseCollider* collider)
 		//敵と衝突した際は現在のプレイヤーの位置にアイテムを落とす 勝手に戻さないよう取得状態かも確認する
 		isPickUp = false; // アイテムを落とす
 		pos = *ItemObjMgr::GetInstance()->GetpPlayerPos();
+		pos.y += radius*2;
 	}
 }
 
@@ -50,12 +61,12 @@ void ItemObj::Draw(const Camera& camera)
 		//ここでプレイヤーのポインタを参照して、プレイヤーの位置に描画するようにする
 		//仮呼び出しVec2f*
 	
-		Vec2f* cPos = ItemObjMgr::GetInstance()->GetpPlayerPos(); 
+		//Vec2f* cPos = ItemObjMgr::GetInstance()->GetpPlayerPos(); 
 
 		//プレイヤーの位置座標のポインタがnullptrでないことを確認
-		assert(cPos != nullptr );
+		//assert(cPos != nullptr );
 
-		DrawCircleAA(cPos->x, cPos->y, radius, 32, GetColor(0, 0, 255), TRUE);
+		DrawCircleAA(pos.x, pos.y, radius, 32, GetColor(0, 0, 255), TRUE);
 	}
 	else {
 		DrawCircleAA(pos.x, pos.y, radius, 32, GetColor(0, 0, 255), TRUE);
