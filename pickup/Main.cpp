@@ -8,7 +8,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int nSho
     SetAlwaysRunFlag(true) ,                            //バッググラウンドでも動作させる(true)
     SetWaitVSyncFlag(0),                                //垂直同期OFF(0)
     SetBackgroundColor(0, 0, 0),                        //ウィンドウ背景の色
-    SetFontSize(60),                                    //フォントサイズ
+    SetFontSize(20),                                    //フォントサイズ
     ChangeWindowMode(1),                                //ウィンドウ、全画面(0 = 全画面,1 =　ウィンドウ)
     SetMainWindowText("Sound_Dungeon"),                 //ソフトの名前
     ChangeFontType(DX_FONTTYPE_ANTIALIASING_EDGE_8X8),  //フォントのタイプ
