@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "ItemObj.h"
 #include "Collider.h"
+#include "ItemObjMgr.h"
 ItemObj::ItemObj(rect genarateOffArea)
 {
 	Initialize();
@@ -33,6 +34,13 @@ void ItemObj::OnCollision(BaseCollider* collider)
 	{
 		isPickUp = true; // プレイヤーと衝突した際にアイテムを拾ったことにする
 	}
+	if(collider->GetTag() == ColliderTag::TAG_ENEMY
+	   &&IsPickUp())
+	{
+		//敵と衝突した際は現在のプレイヤーの位置にアイテムを落とす 勝手に戻さないよう取得状態かも確認する
+		isPickUp = false; // アイテムを落とす
+		pos = *ItemObjMgr::GetInstance()->GetpPlayerPos();
+	}
 }
 
 void ItemObj::Draw(const Camera& camera)
@@ -40,9 +48,12 @@ void ItemObj::Draw(const Camera& camera)
 
 	if (IsPickUp()) {
 		//ここでプレイヤーのポインタを参照して、プレイヤーの位置に描画するようにする
-		//仮呼び出し
-		Vec2f playerPos = {10,10};
-		Vec2f* cPos = &playerPos; 
+		//仮呼び出しVec2f*
+	
+		Vec2f* cPos = ItemObjMgr::GetInstance()->GetpPlayerPos(); 
+
+		//プレイヤーの位置座標のポインタがnullptrでないことを確認
+		assert(cPos != nullptr );
 
 		DrawCircleAA(cPos->x, cPos->y, radius, 32, GetColor(0, 0, 255), TRUE);
 	}

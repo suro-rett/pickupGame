@@ -16,6 +16,8 @@ void Scene::Initialize()
 	ui = new UIManager{ {0, 0} };
 	ui->Initialize();
 	player.Initialize();
+	//ItemObjMgr::GetInstance()->SetPPlayerPos(&player.pos); // プレイヤーの位置をアイテムマネージャーにセット
+	
 }
 
 void Scene::Update()
