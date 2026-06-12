@@ -31,5 +31,6 @@ public:
 	void Update() ;
 	void Draw(const Camera& camera) override;
 
+	Vec2f* getPos() { return &pos; }
 };
 

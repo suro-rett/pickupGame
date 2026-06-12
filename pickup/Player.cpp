@@ -4,12 +4,16 @@
 
 void Player::OnCollision(BaseCollider* collider)
 {
-	if (collider->GetTag() == ColliderTag::TAG_ENEMY)
+	if (collider->GetTag() == ColliderTag::TAG_ENEMY || collider->GetTag() == ColliderTag::TAG_STAGE)
 	{
 		if (shot) {
 			shot = false;
-			back = false;
+			back = true;
 		}
+		if (!shot) {
+			time -= 0.05f;
+		}
+
 	}
 }
 
@@ -19,7 +23,7 @@ void Player::Initialize()
 	collider->SetTag(ColliderTag::TAG_PLAYER);
 	AddCollider(std::move(collider));
 
-	Stinger = { Config::ScreenWidth / 2,Config::ScreenHeight / 4 };
+	Stinger = { Config::ScreenWidth / 2,Config::ScreenHeight / 4 - 35 };
 }
 
 void Player::Finalize()
@@ -30,11 +34,11 @@ void Player::Finalize()
 void Player::Update()
 {
 	Vec2f inputDir = { 0.0f, 0.0f };
-	if (IsPushKey(KEY_INPUT_LEFT) && Stinger.x >= 0 + circleR)
+	if (IsPushKey(KEY_INPUT_LEFT) && Stinger.x >= 50 + circleR)
 	{
 		inputDir.x -= speed;
 	}
-	if (IsPushKey(KEY_INPUT_RIGHT) && Stinger.x <= Config::ScreenWidth - circleR)
+	if (IsPushKey(KEY_INPUT_RIGHT) && Stinger.x <= Config::ScreenWidth - 50 -circleR)
 	{
 		inputDir.x += speed;
 	}
@@ -68,7 +72,7 @@ void Player::Update()
 	}
 
 	if (!shot && !back) {
-	time += 0.05f;
+		time += 0.05f;
 		angle = sin(time) * DX_PI_F / 4.0f;
 	}
 

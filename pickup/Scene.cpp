@@ -16,6 +16,8 @@ void Scene::Initialize()
 	ui = new UIManager{ {0, 0} };
 	ui->Initialize();
 	player.Initialize();
+	Vec2f* plaPos = player.getPos();
+
 }
 
 void Scene::Update()
