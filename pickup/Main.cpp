@@ -10,7 +10,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int nSho
     SetBackgroundColor(0, 0, 0),                        //ウィンドウ背景の色
     SetFontSize(20),                                    //フォントサイズ
     ChangeWindowMode(1),                                //ウィンドウ、全画面(0 = 全画面,1 =　ウィンドウ)
-    SetMainWindowText("Sound_Dungeon"),                 //ソフトの名前
+    SetMainWindowText("PickUp_Game"),                 //ソフトの名前
     ChangeFontType(DX_FONTTYPE_ANTIALIASING_EDGE_8X8),  //フォントのタイプ
     SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32),                    //ウィンドウ解像度
     DxLib_Init(), 
@@ -31,7 +31,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int nSho
 		scene.Update();
 		scene.Draw();
 
-        drawFPS();          //今のFPSの平均を表示
+        //drawFPS();          //今のFPSの平均を表示
         waitFPS();          //FPSが上限値以降に行かないように止める
     }
 

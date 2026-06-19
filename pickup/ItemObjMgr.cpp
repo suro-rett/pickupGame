@@ -22,7 +22,7 @@ void ItemObjMgr::Init()
 {
 	currentGetItemCount = 0; //初期化
 	ganarataCount = 20; //生成するアイテムの数
-    generateOffArea = rect(0.05f, 0.35f, 0.05f, 0.1f);
+    generateOffArea = rect(0.07f, 0.35f, 0.07f, 0.12f);
     for (int i = 0; i < ganarataCount; i++) {
         itemObjs.push_back(new ItemObj(generateOffArea));
     }
